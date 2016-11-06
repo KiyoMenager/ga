@@ -8,7 +8,7 @@ defmodule ToroidalGrid do
   place inside each neighborhood by genetic operations.
   """
   defstruct max_row_i: 0, max_col_i: 0, grid: {}
-  @type t :: %__MODULE__{max_row_i: non_neg_integer, max_col_i: non_neg_integer, grid: TupleMatrix.t}
+  @type t :: TupleMatrix.t
 
   @type element :: TupleMatrix.element
   @type size :: non_neg_integer
@@ -107,7 +107,7 @@ defmodule ToroidalGrid do
       ...>   |> Enum.reduce([], &([&1|&2]))
       ...>   |> Enum.sort
       ...> end
-      iex> %{tuple: grid} = ToroidalGrid.map_neighborhoods(toroidal, transform)
+      iex> ToroidalGrid.map_neighborhoods(toroidal, transform)
       %TupleMatrix{
         nb_cols: 3,
         nb_rows: 3,
