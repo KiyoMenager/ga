@@ -1,0 +1,2 @@
+%{"local_search": {:git, "https://github.com/KiyoMenager/local_search.git", "886c52bbe35a92468cf08b7c1a58480e77db2b2b", []},
+  "tuple_matrix": {:git, "https://github.com/KiyoMenager/tuple_matrix.git", "e22cb371cf5b98867153d3c765035d20278ae019", []}}

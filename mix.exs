@@ -27,6 +27,9 @@ defmodule Ga.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [{:tuple_matrix, git: "https://github.com/KiyoMenager/tuple_matrix.git"}]
+    [
+      {:tuple_matrix, git: "https://github.com/KiyoMenager/tuple_matrix.git"},
+      {:local_search, git: "https://github.com/KiyoMenager/local_search.git"}
+    ]
   end
 end
