@@ -1,2 +1,5 @@
-%{"local_search": {:git, "https://github.com/KiyoMenager/local_search.git", "886c52bbe35a92468cf08b7c1a58480e77db2b2b", []},
+%{"csvlixir": {:hex, :csvlixir, "2.0.3", "297f4217726ef7f0645bd9b3883cdbd6193ac8fe964aeea8eeb4b3406acc46ac", [:mix], []},
+  "dataset_loader": {:git, "https://github.com/KiyoMenager/dataset_loader.git", "ae1ba30817d80d8552439e2bc3b929083e89993f", []},
+  "local_search": {:git, "https://github.com/KiyoMenager/local_search.git", "7c1f1e3a468d8375de0a25985389c19126666792", []},
+  "nimble_csv": {:hex, :nimble_csv, "0.1.0", "b988ab0eeac9ca5980780b76a4a217b2ec943b2debaf50b0ccf0cd1a6c4adf56", [:mix], []},
   "tuple_matrix": {:git, "https://github.com/KiyoMenager/tuple_matrix.git", "e22cb371cf5b98867153d3c765035d20278ae019", []}}
