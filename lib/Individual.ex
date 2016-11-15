@@ -19,11 +19,17 @@ defmodule Ga.Individual do
       iex> criterion_callback = fn genes -> genes |> Enum.reduce(&(&1 + &2)) end
       iex> Ga.Individual.new([3, 7, 6, 4], criterion_callback)
       %Ga.Individual{genes: [3, 7, 6, 4], fitness: 0.05}
+
+      if no `criterion_callback` is given, fitness is set to max which is 1.0.
+
+      iex> Ga.Individual.new([3, 7, 6, 4])
+      %Ga.Individual{genes: [3, 7, 6, 4], fitness: 1.0}
   """
   @spec new(list, (list -> Float.t)) :: list
 
-  def new(genes, criterion_callback) do
-    %__MODULE__{genes: genes, fitness: 1 / criterion_callback.(genes)}
+  def new(genes, criterion_callback \\ nil) do
+    criterion = if criterion_callback, do: criterion_callback.(genes), else: 1
+    %__MODULE__{genes: genes, fitness: 1 / criterion}
   end
 
   @doc """
