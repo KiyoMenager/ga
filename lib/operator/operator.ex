@@ -8,5 +8,5 @@ defmodule Ga.Operator do
   @doc """
   Returns a callable operator.
   """
-  @callback run_callback() :: callback
+  @callback get_callback() :: callback
 end

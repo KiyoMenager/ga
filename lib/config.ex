@@ -52,12 +52,12 @@ defmodule Ga.Config do
 
   @doc """
   Returns an operator according to the given tag.
-  
+
   """
   @spec operator_for(t, atom) :: operator_callback
 
   def operator_for(%__MODULE__{crossovers: modules}, :crossover) do
-    handle_initialization(Recombination.init(modules))
+    handle_initialization(Recombination.get_callback(modules: modules))
   end
   def operator_for(%__MODULE__{crossovers: _modules}, :mutation) do
     handle_initialization(nil)
