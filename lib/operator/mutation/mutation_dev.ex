@@ -34,7 +34,7 @@ defmodule Ga.Operator.MutationDev do
     `:rate`: The mutation rate. If not provided the default 0.015 will be used.
 
   ## Examples
-      iex>
+
 
   """
   @spec get_callback(options) :: Ga.Operator.callback
@@ -53,13 +53,28 @@ defmodule Ga.Operator.MutationDev do
   is randomly picked from the given `mutations` and applied to the given
   `genome`.
 
+  ## Examples
+
+      iex> Ga.Operator.MutationDev.run([1, 2, 3, 4], [], 1)
+      [1, 2, 3, 4]
+
+      iex> Ga.Operator.MutationDev.run([1, 2, 3, 4], [Ga.Operator.Mutation.Insertion], 0)
+      [1, 2, 3, 4]
+
+      iex> mutated = Ga.Operator.MutationDev.run([1, 2, 3, 4], [Ga.Operator.Mutation.Insertion], 1)
+      iex> length(mutated)
+      4
   """
+  @spec run(list, list(module), rate) :: list
+
+  def run(genome,        [],             _), do: genome
   def run(genome, mutations, mutation_rate) do
     genome_size = length(genome)
 
     Stream.repeatedly(fn -> select_mutation(mutations, :rand.uniform(), mutation_rate) end)
-    |> Stream.scan(genome, &apply(&1, &2, genome_size - 1))
+    |> Stream.scan(genome, &apply_mutation(&1, &2, genome_size - 1))
     |> Enum.take(genome_size + 1)
+    |> List.last
   end
 
   @doc """
@@ -83,6 +98,6 @@ defmodule Ga.Operator.MutationDev do
   defp select_mutation(_,    rate, mutation_rate) when rate > mutation_rate, do: nil
   defp select_mutation(modules, _,             _) do
     module = modules |> Enum.take_random(1) |> List.first
-    module.run_callback
+    module.get_callback
   end
 end
