@@ -2,10 +2,11 @@ defmodule Ga.PopulationDev do
 
   alias Ga.{Config, Individual}
 
-  @opaque t :: %__MODULE__{individuals: ToroidalGrid.t, step: non_neg_integer}
+  @opaque t :: %__MODULE__{individuals: ToroidalGrid.t, step: step}
   defstruct [:individuals, :step]
 
   @type   config     :: Config.t
+  @type   step       :: non_neg_integer
   @type   individual :: Individual.t
 
   @spec new(tuple(), config) :: t
@@ -21,7 +22,7 @@ defmodule Ga.PopulationDev do
   @spec steps_up(t, config) :: t
 
   def steps_up(%__MODULE__{individuals: inds, step: step} = population, config) do
-    inds = inds |> ToroidalGrid.map_neighborhoods(&steps_up(&1, &2, config))
+    inds = inds |> ToroidalGrid.map_neighborhoods(&steps_up(&1, &2, config, step))
     %__MODULE__{population | individuals: inds, step: step + 1}
   end
 
@@ -29,14 +30,14 @@ defmodule Ga.PopulationDev do
   Evolves the given `subject` individual in its neighborhood with the given
   `config`.
   """
-  @spec steps_up(individual, list(individual), config) :: t
+  @spec steps_up(individual, list(individual), config, step) :: t
 
-  def steps_up(subject, neighbors, config) do
+  def steps_up(subject, neighbors, config, step) do
     neighbors
     |> do_tournament(config)
     |> do_crossover(subject, config)
     |> do_mutation(config)
-    |> do_local_opt(config)
+    |> do_local_opt(config, step)
     |> insert_if_better(subject, config)
   end
 
@@ -86,13 +87,13 @@ defmodule Ga.PopulationDev do
   @doc """
   Applies a local optimisation operator on an ordered list of genes.
 
-      iex> Ga.PopulationDev.do_local_opt(["a", "b", "c"], Ga.Config.new)
+      iex> Ga.PopulationDev.do_local_opt(["a", "b", "c"], Ga.Config.new, :infinity)
       ["a", "b", "c"]
 
   """
-  @spec do_local_opt(list, config) :: t
-  def do_local_opt(genes, config) do
-    case config |> Config.operator_for(:local_opt) do
+  @spec do_local_opt(list, config, step) :: t
+  def do_local_opt(genes, config, step) do
+    case config |> Config.optimisation_for(:local_opt, step) do
       {:ok, op}  -> op.(genes)
       :not_found -> genes
     end
