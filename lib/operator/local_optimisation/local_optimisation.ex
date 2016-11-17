@@ -5,10 +5,8 @@ defmodule Ga.Operator.LocalOptimisation do
   alias Ga.Operator
 
   @doc """
-  Returns an operator from the given `modules` according to the given `:rate`
-  option. If not options is given, the chance for each operator to be selected
-  is equal.
-
+  Returns an optimisation operator from the given `modules`.
+  Because optimisations aim to maximize a criterion, a criterion 
   Note: Currently the only suported selection's rate is the default.
 
   ## Example
@@ -16,11 +14,22 @@ defmodule Ga.Operator.LocalOptimisation do
       iex> op.(2)
       4
   """
-  @spec init(module) :: Operator.t
-  @spec init(module, list) :: Operator.t
+  @spec get_callback() :: Operator.t
+  @spec get_callback(list(module)) :: Operator.t
 
-  def init(dependencies, opts \\ []) do
-    module = dependencies |> Enum.take_random(1) |> List.first
-    module.run_callback
+  def get_callback(opts \\ []) do
+    modules           = Keyword.get(opts, :modules, [])
+    distance_callback = Keyword.get(opts, :distance_callback, [])
+
+    modules
+    |> Enum.take_random(1)
+    |> List.first
+    |> optimisation_callback(distance_callback)
   end
+
+  def optimisation_callback(   nil,                  _), do: nil
+  def optimisation_callback(module, criterion_callback) do
+    fn genome -> module.run(genome, criterion_callback) end
+  end
+
 end
