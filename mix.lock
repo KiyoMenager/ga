@@ -1,5 +1,7 @@
 %{"csvlixir": {:hex, :csvlixir, "2.0.3", "297f4217726ef7f0645bd9b3883cdbd6193ac8fe964aeea8eeb4b3406acc46ac", [:mix], []},
   "dataset_loader": {:git, "https://github.com/KiyoMenager/dataset_loader.git", "ae1ba30817d80d8552439e2bc3b929083e89993f", []},
+  "distance_matrix": {:git, "https://github.com/KiyoMenager/distance_matrix.git", "bb1dd884bc2b04b8d0d256b6936541899b7ed93a", []},
   "local_search": {:git, "https://github.com/KiyoMenager/local_search.git", "7c1f1e3a468d8375de0a25985389c19126666792", []},
   "nimble_csv": {:hex, :nimble_csv, "0.1.0", "b988ab0eeac9ca5980780b76a4a217b2ec943b2debaf50b0ccf0cd1a6c4adf56", [:mix], []},
+  "toroidal_grid": {:git, "https://github.com/KiyoMenager/toroidal_grid.git", "d8a83ac46996ac1a7da815f73ce97f3a47aceeb1", []},
   "tuple_matrix": {:git, "https://github.com/KiyoMenager/tuple_matrix.git", "e22cb371cf5b98867153d3c765035d20278ae019", []}}
