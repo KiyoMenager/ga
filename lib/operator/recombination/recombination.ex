@@ -14,11 +14,19 @@ defmodule Ga.Operator.Recombination do
       iex> length(recombined)
       4
 
+      iex> Ga.Operator.Recombination.get_callback(modules: [])
+      nil
+
   """
 
   def get_callback(opts \\ []) do
     modules = Keyword.get(opts, :modules, [])
-    recombination = modules |> Enum.take_random(1) |> List.first
-    recombination.get_callback
+    modules
+    |> Enum.take_random(1)
+    |> List.first
+    |> recombination_callback
   end
+
+  def recombination_callback(module) when is_nil(module), do: nil
+  def recombination_callback(module), do: module.get_callback
 end
