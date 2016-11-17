@@ -43,8 +43,8 @@ defmodule Ga.Operator.Erx do
   @doc """
   Implementation of the `OperatorBehaviour`.
   """
-  @spec run_callback() :: (list -> list)
-  def run_callback, do: &run/1
+  @spec get_callback() :: (list -> list)
+  def get_callback, do: &run/1
 
   @doc """
   Applies the edge recombination operator to the given `routes`.

@@ -19,6 +19,6 @@ defmodule Ga.Operator.Recombination do
   def get_callback(opts \\ []) do
     modules = Keyword.get(opts, :modules, [])
     recombination = modules |> Enum.take_random(1) |> List.first
-    recombination.run_callback
+    recombination.get_callback
   end
 end
