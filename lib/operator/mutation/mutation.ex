@@ -1,4 +1,4 @@
-defmodule Ga.Operator.MutationDev do
+defmodule Ga.Operator.Mutation do
   @moduledoc """
   The mutation operator applies
   The mutation operator consists in applying a list of mutation operations to
@@ -55,13 +55,13 @@ defmodule Ga.Operator.MutationDev do
 
   ## Examples
 
-      iex> Ga.Operator.MutationDev.run([1, 2, 3, 4], [], 1)
+      iex> Ga.Operator.Mutation.run([1, 2, 3, 4], [], 1)
       [1, 2, 3, 4]
 
-      iex> Ga.Operator.MutationDev.run([1, 2, 3, 4], [Ga.Operator.Mutation.Insertion], 0)
+      iex> Ga.Operator.Mutation.run([1, 2, 3, 4], [Ga.Operator.Mutation.Insertion], 0)
       [1, 2, 3, 4]
 
-      iex> mutated = Ga.Operator.MutationDev.run([1, 2, 3, 4], [Ga.Operator.Mutation.Insertion], 1)
+      iex> mutated = Ga.Operator.Mutation.run([1, 2, 3, 4], [Ga.Operator.Mutation.Insertion], 1)
       iex> length(mutated)
       4
   """

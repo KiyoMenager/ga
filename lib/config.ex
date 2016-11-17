@@ -2,7 +2,7 @@ defmodule Ga.Config do
 
   alias Ga.Operator
   alias Ga.Operator.{Recombination}
-  alias Ga.Operator.MutationDev, as: Mutation
+  alias Ga.Operator.Mutation, as: Mutation
 
   @opaque t :: %__MODULE__{
     distance_callback:  (... -> any),
