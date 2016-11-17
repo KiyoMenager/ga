@@ -1,8 +1,7 @@
 defmodule Ga.Config do
 
   alias Ga.Operator
-  alias Ga.Operator.{Recombination}
-  alias Ga.Operator.Mutation, as: Mutation
+  alias Ga.Operator.{Recombination, Mutation, LocalOptimisation}
 
   @opaque t :: %__MODULE__{
     distance_callback:  (... -> any),
@@ -10,6 +9,7 @@ defmodule Ga.Config do
     crossovers:         list,
     mutations:          list,
     local_opts:         list,
+    opt_start:          Integer.t,
     stop_generation:    Integer.t
   }
   defstruct distance_callback:  nil,
@@ -17,6 +17,7 @@ defmodule Ga.Config do
             crossovers:         [],
             mutations:          [],
             local_opts:         [],
+            opt_start:          :infinity,
             stop_generation:    100
 
   @type operator_callback :: Operator.callback
@@ -47,6 +48,7 @@ defmodule Ga.Config do
       crossovers:         Keyword.get(opts, :crossovers, []),
       mutations:          Keyword.get(opts, :mutations, []),
       local_opts:         Keyword.get(opts, :local_opts, []),
+      opt_start:          Keyword.get(opts, :opt_start, :infinity),
       stop_generation:    Keyword.get(opts, :stop_generation, 100)
     }
   end
@@ -63,8 +65,16 @@ defmodule Ga.Config do
   def operator_for(%__MODULE__{mutations: modules}, :mutation) do
     handle_initialization(Mutation.get_callback(modules: modules, rate: 0.015))
   end
-  def operator_for(%__MODULE__{local_opts: _modules}, :local_opt) do
-    handle_initialization(nil)
+
+  def optimisation_for(%__MODULE__{}, :local_opt, :infinity), do: handle_initialization(nil)
+  def optimisation_for(%__MODULE__{}, :local_opt,         0), do: handle_initialization(nil)
+  def optimisation_for(%__MODULE__{local_opts: modules, distance_callback: callback, opt_start: start}, :local_opt, step) do
+    cond do
+      rem(step, start) == 0 ->
+        handle_initialization(LocalOptimisation.get_callback(modules: modules, distance_callback: callback))
+      :else -> handle_initialization(nil)
+    end
+
   end
 
   @doc """
