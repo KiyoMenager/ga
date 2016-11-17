@@ -2,6 +2,7 @@ defmodule Ga.Config do
 
   alias Ga.Operator
   alias Ga.Operator.{Recombination}
+  alias Ga.Operator.MutationDev, as: Mutation
 
   @opaque t :: %__MODULE__{
     distance_callback:  (... -> any),
@@ -59,8 +60,8 @@ defmodule Ga.Config do
   def operator_for(%__MODULE__{crossovers: modules}, :crossover) do
     handle_initialization(Recombination.get_callback(modules: modules))
   end
-  def operator_for(%__MODULE__{crossovers: _modules}, :mutation) do
-    handle_initialization(nil)
+  def operator_for(%__MODULE__{mutations: modules}, :mutation) do
+    handle_initialization(Mutation.get_callback(modules: modules, rate: 0.015))
   end
   def operator_for(%__MODULE__{local_opts: _modules}, :local_opt) do
     handle_initialization(nil)
