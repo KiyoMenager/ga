@@ -16,7 +16,7 @@ defmodule Ga.Individual do
 
     ##Examples
 
-      iex> criterion_callback = fn genes -> genes |> Enum.reduce(&(&1 + &2)) end
+      iex> criterion_callback = fn genes, _ -> genes |> Enum.reduce(&(&1 + &2)) end
       iex> Ga.Individual.new([3, 7, 6, 4], criterion_callback)
       %Ga.Individual{genes: [3, 7, 6, 4], fitness: 0.05}
 
@@ -28,7 +28,7 @@ defmodule Ga.Individual do
   @spec new(list, (list -> Float.t)) :: list
 
   def new(genes, criterion_callback \\ nil) do
-    criterion = if criterion_callback, do: criterion_callback.(genes), else: 1
+    criterion = if criterion_callback, do: criterion_callback.(genes, :cyclic), else: 1
     %__MODULE__{genes: genes, fitness: 1 / criterion}
   end
 
@@ -36,7 +36,7 @@ defmodule Ga.Individual do
   Returns the genetical representation of the individual.
   ##Examples
     iex> [3, 7, 6, 4]
-    ...> |> Ga.Individual.new(fn _ -> 1 end)
+    ...> |> Ga.Individual.new(fn _, _ -> 1 end)
     ...> |> Ga.Individual.genes
     [3, 7, 6, 4]
 
@@ -49,8 +49,8 @@ defmodule Ga.Individual do
   Returns the fittest `individual`.
 
     ##Examples
-      iex> unfit_ind = [] |> Ga.Individual.new(fn _ -> 20 end)
-      iex> fit_ind = [] |> Ga.Individual.new(fn _ -> 1 end)
+      iex> unfit_ind = [] |> Ga.Individual.new(fn _, _ -> 20 end)
+      iex> fit_ind = [] |> Ga.Individual.new(fn _, _ -> 1 end)
       iex> fittest = Ga.Individual.fittest(fit_ind, unfit_ind)
       iex> fit_ind == fittest
       true

@@ -85,10 +85,10 @@ defmodule Ga.Operator.LocalOptimisation.TwoOpt do
     c = elem(encoded_solution, j_pred)
     d = elem(encoded_solution, j_succ)
 
-    ab = distance_callback.(a, b)
-    cd = distance_callback.(c, d)
-    ac = distance_callback.(a, c)
-    bd = distance_callback.(b, d)
+    ab = distance_callback.([a, b], :acyclic)
+    cd = distance_callback.([c, d], :acyclic)
+    ac = distance_callback.([a, c], :acyclic)
+    bd = distance_callback.([b, d], :acyclic)
 
     # triangle of inequality: at least 1 edge will be shorter.
 	  # if both will be longer, there will be no improvement.

@@ -124,12 +124,10 @@ defmodule Ga.Population do
   # Returns a generator to generate random `individuals` from the given genes.
   @spec generator_callback(list(), config) :: TupleMatrix.producer
 
-  defp generator_callback(genes, config) do
+  defp generator_callback([gene|genes], config) do
     fn _i, _j ->
-      depot  = elem(genes, 0)
-      others = genes |> Tuple.to_list |> Enum.drop(1) |> Enum.shuffle
-      randomized_genes = [depot | others]
-      Individual.new(randomized_genes, config.criterion_callback)
+      genome = [gene | (genes |> Enum.shuffle)]
+      Individual.new(genome, config.criterion_callback)
     end
   end
 end

@@ -6,7 +6,7 @@ defmodule Ga.Operator.LocalOptimisation do
 
   @doc """
   Returns an optimisation operator from the given `modules`.
-  Because optimisations aim to maximize a criterion, a criterion 
+  Because optimisations aim to maximize a criterion, a criterion
   Note: Currently the only suported selection's rate is the default.
 
   ## Example
@@ -19,12 +19,12 @@ defmodule Ga.Operator.LocalOptimisation do
 
   def get_callback(opts \\ []) do
     modules           = Keyword.get(opts, :modules, [])
-    distance_callback = Keyword.get(opts, :distance_callback, [])
+    criterion_callback = Keyword.get(opts, :criterion_callback, [])
 
     modules
     |> Enum.take_random(1)
     |> List.first
-    |> optimisation_callback(distance_callback)
+    |> optimisation_callback(criterion_callback)
   end
 
   def optimisation_callback(   nil,                  _), do: nil

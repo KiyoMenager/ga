@@ -4,7 +4,6 @@ defmodule Ga.Config do
   alias Ga.Operator.{Recombination, Mutation, LocalOptimisation}
 
   @opaque t :: %__MODULE__{
-    distance_callback:  (... -> any),
     criterion_callback: (... -> any),
     crossovers:         list,
     mutations:          list,
@@ -12,8 +11,7 @@ defmodule Ga.Config do
     opt_start:          Integer.t,
     stop_generation:    Integer.t
   }
-  defstruct distance_callback:  nil,
-            criterion_callback: nil,
+  defstruct criterion_callback: nil,
             crossovers:         [],
             mutations:          [],
             local_opts:         [],
@@ -43,7 +41,6 @@ defmodule Ga.Config do
 
   def new(opts \\ []) do
     %__MODULE__{
-      distance_callback:  Keyword.get(opts, :distance_callback),
       criterion_callback: Keyword.get(opts, :criterion_callback),
       crossovers:         Keyword.get(opts, :crossovers, []),
       mutations:          Keyword.get(opts, :mutations, []),
@@ -63,15 +60,15 @@ defmodule Ga.Config do
     handle_initialization(Recombination.get_callback(modules: modules))
   end
   def operator_for(%__MODULE__{mutations: modules}, :mutation) do
-    handle_initialization(Mutation.get_callback(modules: modules, rate: 0.015))
+    handle_initialization(Mutation.get_callback(modules: modules, rate: 0.02))
   end
 
   def optimisation_for(%__MODULE__{}, :local_opt, :infinity), do: handle_initialization(nil)
   def optimisation_for(%__MODULE__{}, :local_opt,         0), do: handle_initialization(nil)
-  def optimisation_for(%__MODULE__{local_opts: modules, distance_callback: callback, opt_start: start}, :local_opt, step) do
+  def optimisation_for(%__MODULE__{local_opts: modules, criterion_callback: callback, opt_start: start}, :local_opt, step) do
     cond do
       rem(step, start) == 0 ->
-        handle_initialization(LocalOptimisation.get_callback(modules: modules, distance_callback: callback))
+        handle_initialization(LocalOptimisation.get_callback(modules: modules, criterion_callback: callback))
       :else -> handle_initialization(nil)
     end
 
@@ -84,10 +81,6 @@ defmodule Ga.Config do
   @spec callback_for(t, atom) :: operator_callback
 
   def callback_for(%__MODULE__{criterion_callback: callback}, :criterion) do
-    handle_initialization(callback)
-  end
-
-  def callback_for(%__MODULE__{distance_callback: callback}, :distance) do
     handle_initialization(callback)
   end
 

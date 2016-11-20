@@ -60,7 +60,7 @@ defmodule Ga do
       |> Population.fittest
       |> Individual.genes
 
-    distance = callback.(fittest_genome)
+    distance = callback.(fittest_genome, :cyclic)
 
     Logger.warn inspect "Generation: #{step}, distance : #{distance}"
     Logger.warn inspect fittest_genome
